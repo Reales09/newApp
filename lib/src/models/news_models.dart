@@ -37,23 +37,23 @@ class NewsResponse {
 class Article {
   Article({
     required this.source,
-    required this.author,
+    this.author,
     required this.title,
-    this.description,
+    required this.description,
     required this.url,
-    this.urlToImage,
+    required this.urlToImage,
     required this.publishedAt,
     this.content,
   });
 
   Source source;
-  String author;
+  String? author;
   String title;
-  dynamic description;
+  String description;
   String url;
-  dynamic urlToImage;
+  String urlToImage;
   DateTime publishedAt;
-  dynamic content;
+  String? content;
 
   factory Article.fromRawJson(String str) => Article.fromJson(json.decode(str));
 
@@ -63,9 +63,9 @@ class Article {
         source: Source.fromJson(json["source"]),
         author: json["author"],
         title: json["title"],
-        description: json["description"],
+        description: json["description"] ?? '',
         url: json["url"],
-        urlToImage: json["urlToImage"],
+        urlToImage: json["urlToImage"] ?? '',
         publishedAt: DateTime.parse(json["publishedAt"]),
         content: json["content"],
       );
@@ -84,44 +84,24 @@ class Article {
 
 class Source {
   Source({
-    required this.id,
+    this.id,
     required this.name,
   });
 
-  Id id;
-  Name name;
+  String? id;
+  String name;
 
   factory Source.fromRawJson(String str) => Source.fromJson(json.decode(str));
 
   String toRawJson() => json.encode(toJson());
 
   factory Source.fromJson(Map<String, dynamic> json) => Source(
-        id: idValues.map[json["id"]]!,
-        name: nameValues.map[json["name"]]!,
+        id: json["id"],
+        name: json["name"],
       );
 
   Map<String, dynamic> toJson() => {
-        "id": idValues.reverse[id],
-        "name": nameValues.reverse[name],
+        "id": id,
+        "name": name,
       };
-}
-
-enum Id { GOOGLE_NEWS }
-
-final idValues = EnumValues({"google-news": Id.GOOGLE_NEWS});
-
-enum Name { GOOGLE_NEWS }
-
-final nameValues = EnumValues({"Google News": Name.GOOGLE_NEWS});
-
-class EnumValues<T> {
-  Map<String, T> map;
-  late Map<T, String> reverseMap;
-
-  EnumValues(this.map);
-
-  Map<T, String> get reverse {
-    reverseMap = map.map((k, v) => MapEntry(v, k));
-    return reverseMap;
-  }
 }

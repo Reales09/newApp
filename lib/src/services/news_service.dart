@@ -14,7 +14,7 @@ class NewsService with ChangeNotifier {
 
   getTopHeadlines() async {
     var uri = Uri.https(
-        _URL_NEWS, '/v2/top-headlines', {'country': 'co', 'apiKey': _APIKEY});
+        _URL_NEWS, '/v2/top-headlines', {'country': 'us', 'apiKey': _APIKEY});
     final resp = await http.get(uri);
 
     final NewsResponse newsResponse = NewsResponse.fromRawJson(resp.body);
